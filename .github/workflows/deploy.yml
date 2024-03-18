@@ -10,14 +10,14 @@ jobs:
     name: Build Binary
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Go 1.16
-        uses: actions/setup-go@v1
+      - name: Set up Go
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.16
+          go-version: '^1.16'
         id: go
 
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
 
       - name: Get dependencies
         run: |
@@ -27,7 +27,7 @@ jobs:
           CGO_ENABLED=0 go build -v -ldflags "-w -s -extldflags '-static' -X 'github.com/NekoWheel/NekoCAS/internal/conf.CommitSHA=$GITHUB_SHA'" -o NekoCAS .
           pwd
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: NekoCAS
           path: /home/runner/work/NekoCAS/NekoCAS
@@ -38,7 +38,7 @@ jobs:
     needs: build
     steps:
       - name: Get artifacts
-        uses: actions/download-artifact@master
+        uses: actions/download-artifact@v4
         with:
           name: NekoCAS
           path: /home/runner/work/NekoCAS/NekoCAS
